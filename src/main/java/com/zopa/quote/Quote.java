@@ -1,6 +1,7 @@
 package com.zopa.quote;
 
 import com.zopa.quote.exceptions.InvalidAmountException;
+import com.zopa.quote.exceptions.InvalidCsvFile;
 import com.zopa.quote.model.InputParameters;
 import com.zopa.quote.service.QuoteService;
 
@@ -9,46 +10,44 @@ import com.zopa.quote.service.QuoteService;
  *
  */
 public class Quote {
-	
-	private static final int ARGUMENTS_LENGTH = 2;
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new Quote(args);
-	}
+    private static final int ARGUMENTS_LENGTH = 2;
 
-	protected Quote(String[] args) {
+    /**
+     * @param args
+     */
+    public static void main(final String[] args) {
+        new Quote(args);
+    }
 
-		try {
-			
-			if (validateArguments(args)) {
-				InputParameters inputParameters = new InputParameters(args[0], args[1]);
-				
-				QuoteService quoteService = new QuoteService(inputParameters);
-				
-				
-			}
-			
-		} catch (IllegalArgumentException e) {
-			System.out.print(e.getMessage());
-			//System.exit(1);
-		} catch (InvalidAmountException e) {
-			System.out.print(e.getMessage());
-			//System.exit(1);
-		} 
+    protected Quote(final String[] args) {
 
-	}
+        try {
 
-	private boolean validateArguments(String[] args) {
+            if (validateArguments(args)) {
+                final InputParameters inputParameters = new InputParameters(args[0], args[1]);
 
-		if (args == null || args.length != ARGUMENTS_LENGTH) {
-			throw new IllegalArgumentException(
-					"Invalid arguments! You should pass the CSV file and the loan amount, in this order.");
-		}
+                final QuoteService quoteService = new QuoteService(inputParameters);
 
-		return true;
-	}
+            }
+
+        } catch (final IllegalArgumentException e) {
+            System.out.print(e.getMessage());
+        } catch (final InvalidAmountException e) {
+            System.out.print(e.getMessage());
+        } catch (final InvalidCsvFile e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private boolean validateArguments(final String[] args) {
+
+        if (args == null || args.length != ARGUMENTS_LENGTH) {
+            throw new IllegalArgumentException("Invalid arguments! You should pass the CSV file and the loan amount, in this order.");
+        }
+
+        return true;
+    }
 
 }
